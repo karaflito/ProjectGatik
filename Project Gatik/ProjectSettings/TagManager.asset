@@ -47,9 +47,9 @@ TagManager:
   - name: ForeGround
     uniqueID: 2730797927
     locked: 0
-  - name: Player
-    uniqueID: 845435917
-    locked: 0
   - name: Walls
     uniqueID: 1024630787
+    locked: 0
+  - name: Player
+    uniqueID: 845435917
     locked: 0
