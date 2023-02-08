@@ -20,7 +20,15 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Vector2 to store the direction of movement from player input
-    Vector2 direction;
+     Vector2 direction;
+     Vector2 lastDirection;
+    public Vector2 LastDirection
+    {
+        get
+        {
+            return lastDirection;
+        }
+    }
 
     // Components for controlling physics and animation
     Rigidbody2D rd;
@@ -45,12 +53,17 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
+       
     }
 
     // Input callback function that sets the direction of movement
     public void PlayerInput(InputAction.CallbackContext directionPressed)
     {
         direction = directionPressed.ReadValue<Vector2>();
+        if (direction != Vector2.zero)
+        {
+            lastDirection = direction;
+        }
     }
 
     // Input callback function that sets if its ready to fire
@@ -78,17 +91,19 @@ public class PlayerMovement : MonoBehaviour
     // Handles movement and animation
     private void Movement()
     {
-        // If there is input
         if (direction != Vector2.zero)
         {
-            //Set animator parameters for horizontal and vertical movement
             animator.SetFloat("Horizontal", direction.x);
             animator.SetFloat("Vertical", direction.y);
-        }
 
-        // Set animator parameter for overall speed
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Transform childTransform = transform.GetChild(0).transform;
+            childTransform.position = transform.position + (Vector3)direction * 0.5f;
+            childTransform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+        
+
         animator.SetFloat("Speed", direction.sqrMagnitude);
-        // Move the rigidbody based on the direction and movementSpeed
         rd.velocity = direction * movementSpeed * Time.fixedDeltaTime;
     }
 }

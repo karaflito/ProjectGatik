@@ -7,6 +7,9 @@ public class Projectile : MonoBehaviour
 
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject projectile;
+    [SerializeField] private float fireRate = 0.5f;
+    [SerializeField] private float nextFire = 0.0f;
+
 
     PlayerMovement playerMovement;
 
@@ -30,9 +33,14 @@ public class Projectile : MonoBehaviour
 
     private void ProjectileSpawn()
     {
-        if(playerMovement.Fired)
+        // Check if the player has fired and enough time has passed since the last shot
+        if (playerMovement.Fired && Time.time > nextFire)
         {
+            
             GameObject projectileInstance = Instantiate(projectile, shootPoint.transform.position, Quaternion.identity);
+
+            // Update the nextFire time stamp
+            nextFire = Time.time + fireRate;
         }
 
         
