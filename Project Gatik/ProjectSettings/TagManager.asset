@@ -50,6 +50,9 @@ TagManager:
   - name: Walls
     uniqueID: 1024630787
     locked: 0
+  - name: Projectiles
+    uniqueID: 4219029695
+    locked: 0
   - name: Player
     uniqueID: 845435917
     locked: 0
