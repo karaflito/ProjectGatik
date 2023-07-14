@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        
     }
 
     // Runs physics-based movement in FixedUpdate
@@ -60,10 +60,10 @@ public class PlayerMovement : MonoBehaviour
     public void PlayerInput(InputAction.CallbackContext directionPressed)
     {
         direction = directionPressed.ReadValue<Vector2>();
-        if (direction != Vector2.zero)
+       /* if (direction != Vector2.zero)
         {
             lastDirection = direction;
-        }
+        }*/
     }
 
     // Input callback function that sets if its ready to fire
@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
     // Handles movement and animation
     private void Movement()
     {
-        if (direction != Vector2.zero)
+        /*if (direction != Vector2.zero)
         {
             animator.SetFloat("Horizontal", direction.x);
             animator.SetFloat("Vertical", direction.y);
@@ -104,6 +104,35 @@ public class PlayerMovement : MonoBehaviour
         
 
         animator.SetFloat("Speed", direction.sqrMagnitude);
+        rd.velocity = direction * movementSpeed * Time.fixedDeltaTime;*/
+        // Get the mouse position in world coordinates
+
+
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+        // Calculate the direction from the player to the mouse
+        Vector2 directionToMouse = mousePos - transform.position;
+
+        if (directionToMouse != Vector2.zero)
+        {
+            lastDirection = directionToMouse;
+            animator.SetFloat("Horizontal", directionToMouse.normalized.x);
+            animator.SetFloat("Vertical", directionToMouse.normalized.y);
+
+            //Set the child object's position and rotation
+            float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+            Transform childTransform = transform.GetChild(0).transform;
+            childTransform.position = transform.position + (Vector3)directionToMouse.normalized * 0.5f;
+            childTransform.rotation = Quaternion.Euler(0, 0, angle);
+            
+
+
+        }
+
+
+
+        // Set the speed parameter based on the direction to the mouse
+        animator.SetFloat("Speed", directionToMouse.sqrMagnitude);
         rd.velocity = direction * movementSpeed * Time.fixedDeltaTime;
     }
 }

@@ -36,8 +36,9 @@ public class Projectile : MonoBehaviour
         // Check if the player has fired and enough time has passed since the last shot
         if (playerMovement.Fired && Time.time > nextFire)
         {
-            
-            GameObject projectileInstance = Instantiate(projectile, shootPoint.transform.position, Quaternion.identity);
+
+            Vector3 spawnPosition = shootPoint.position + shootPoint.right * 5f;
+            GameObject projectileInstance = Instantiate(projectile, spawnPosition , Quaternion.identity);
 
             // Update the nextFire time stamp
             nextFire = Time.time + fireRate;

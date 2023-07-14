@@ -12,6 +12,7 @@ public class ArcaneProjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         playerMovement = FindObjectOfType<PlayerMovement>();
         savedDirection = playerMovement.LastDirection;
         float angle = Mathf.Atan2(savedDirection.y, savedDirection.x) * Mathf.Rad2Deg;
@@ -23,5 +24,6 @@ public class ArcaneProjectile : MonoBehaviour
     {
         direction = savedDirection.normalized;
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
+        Destroy(gameObject, 2f);
     }
 }
